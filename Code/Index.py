@@ -30,16 +30,35 @@ class IndexOnFile(Index):
         open(path + "/" + self.name + "_inverted", "x").close()
 
     def indexation(self, path):
-        self.parser.initFile(path)
-        fi = open(path + "/" + self.name + "_index", "w+b")
-        fs = open(path + "/" + self.name + "_inverted", "w+b")
+        #self.parser.initFile(path)
+        self.path = path
+        fi = open(self.path + "/" + self.name + "_index", "w+b")
+        fs = open(self.path + "/" + self.name + "_inverted", "w+b")
         cur = 0
         doc = self.parser.nextDocument()
         while(doc):
+            p, b, l = doc.other["from"].split(";")
+            self.docFrom[doc.id] = (p, int(b), int(l))
             stems = self.textRepresenter(doc.getText())
-            fi.write((doc.getid() + " : " + str(stems)).encode())
+            for s in stems:
+                self.stems[s] = None
+            fi.write((doc.getid() + " : " + str(stems)).encode() + "\n")
             self.docs{doc.getid()} = (cur,fi.tell())
             cur = fi.tell()
             doc = self.parser.nextDocument()
+        for s in self.stems:
+            ds = 
+            for i,(b,l) in self.docs.items():
+                f.seek(b)
+                s = f.read(self.docs[i][1]).splitlines()
+                s = map(lambda x : str.split(x, ":"), s)
+                d = dict(s)
+                
+            fs.write()
 
-
+    def getTfsForDoc(self, i):
+        f = open(self.path + "/" + self.name + "_index", "rb")
+        f.seek(self.docs[i][0])
+        s = f.read(self.docs[i][1])
+        s = re.find()
+        return dict(s)
