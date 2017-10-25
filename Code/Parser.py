@@ -82,6 +82,7 @@ class Parser(object):
                 d.set("from", source);
             else:
                 self.file.close();
+                self.file = None
                 return None
 
         return d

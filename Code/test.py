@@ -2,15 +2,16 @@
 
 import ParserCACM as pars
 import TextRepresenter as txtrep
+import Index
+import pickle as pkl
 
 pars = pars.ParserCACM()
-pars.initFile("../cacm/cacm.txt")
+trep = txtrep.PorterStemmer()
+data = "../cacm/cacm.txt"
+ind = Index.IndexOnFile("test", pars, trep, data)
+path = "../test"
 
-docs = []
-
-
-while (True):
-    d = pars.nextDocument()
-    if d == None:
-        break
-    docs.append(d)
+ind.indexation(path)
+with open(path+"/index.pkl","wb") as f:
+    pkl.dump(ind, f)
+#print(pkl.dumps(ind, protocol=0))
