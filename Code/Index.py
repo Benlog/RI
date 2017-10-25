@@ -94,3 +94,25 @@ class IndexOnFile(Index):
         with open(self.docPath, "rb") as f:
             f.seek(self.docFrom[i][0])
             return f.read(self.docs[i][1])
+
+	def cheatIndexation(self, path):
+		self.path = path
+        with open(self.path + "/" + self.name + "_index", "w+b") as fi:
+		     with open(self.path + "/" + self.name + "_inverted", "w+b") as fs
+		    cur = 0
+		    doc = self.parser.nextDocument()
+		    tempStems = {}
+		    while(doc):
+		        p, b, l = doc.other["from"].split(";")
+		        self.docFrom[doc.id] = (p, int(b), int(l))
+		        stems = self.textRepresenter(doc.getText())
+		        for s,i in stems.items() :
+		            tempStems[s][doc.id] = i
+		        fi.write((doc.getid() + ":" + str(stems)).encode() + "\n")
+		        self.docs{doc.getid()} = (cur,fi.tell())
+		        cur = fi.tell()
+		        doc = self.parser.nextDocument()
+		    cur = 0
+			for s,i in tempStems.items():
+				fs.write((s + ":" + str(i)).encode() + "\n")
+				self.stems[s] = (cur,fi.tell())
