@@ -2,9 +2,8 @@
 
 class Weighter(Object):
 
-    def __init__(self, index, textRepresenter):
+    def __init__(self, index):
         self.index = index
-        self.textRepresenter = textRepresenter
 
     def getDocWeightsForDoc(self, idDoc):
         return self.index.getTfsForDoc(idDoc)
@@ -13,4 +12,4 @@ class Weighter(Object):
         return self.index.getTfsForStem(stem)
 
     def getWeightsForQuery(self, query):
-        return self.textRepresenter.getTextRepresentation(query)
+        return self.index.textRepresenter.getTextRepresentation(query)

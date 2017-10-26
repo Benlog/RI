@@ -5,16 +5,17 @@ import TextRepresenter as txtrep
 import Index
 import pickle as pkl
 from pathlib import Path
+import Weighter
+import IRmode
 
 path = "../test"
-
+trep = txtrep.PorterStemmer()
 
 if Path(path+"/index.pkl").is_file() :
     with open(path+"/index.pkl","rb") as f:
         ind = pkl.load(f)
 else :
     pars = pars.ParserCACM()
-    trep = txtrep.PorterStemmer()
     data = "../cacm/cacm.txt"
     ind = Index.IndexOnFile("test", pars, trep)
     pars.initFile(data)
@@ -22,6 +23,6 @@ else :
     with open(path+"/index.pkl","wb") as f:
         pkl.dump(ind, f)
 
+wei = Weighter(ind, trep)
 
-
-#print(pkl.dumps(ind, protocol=0))
+vec = Vect
