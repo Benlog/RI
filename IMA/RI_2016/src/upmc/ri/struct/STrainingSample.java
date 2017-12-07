@@ -18,5 +18,9 @@ public class STrainingSample<X,Y>implements Serializable{
 		this.output = output;
 	}
 	
-	
+	@Override
+	public String toString() {
+		String r = "<x:" + input + ",y:" + output + ">" + super.toString();
+		return r;
+	}
 }

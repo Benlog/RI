@@ -1,10 +1,13 @@
 package upmc.ri.io;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import upmc.ri.index.ImageFeatures;
@@ -119,6 +122,18 @@ public class ImageNetParser {
 		cl.add("european_fire_salamander");
 		
 		return cl;
+	}
+	
+	public static Map<String, File> getClassFile(String dirPath) throws Exception{
+		File fDir = new File(dirPath);
+		if(!fDir.isDirectory()){
+			throw new Exception("Not a directory path.");
+		}
+		Map<String,File> r = new HashMap<String, File>();
+		for(String c : classesImageNet()){
+			r.put(c, new File(fDir, c+".txt"));
+		}
+		return r;
 	}
 
 }

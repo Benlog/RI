@@ -27,4 +27,10 @@ public class DataSet<X,Y>  implements Serializable{
 		}
 		return out;
 	}
+	
+	@Override
+	public String toString() {
+		String r = "train : \n" + listtrain + "\ntest : \n" + listtest + "\n" + super.toString();
+		return r;
+	}
 }
