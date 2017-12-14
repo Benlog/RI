@@ -5,8 +5,9 @@ import TextRepresenter as txtrep
 import Index
 import pickle as pkl
 from pathlib import Path
-#import Weighter
-#import IRmode
+import numpy as np
+import Weighter as we
+import IRmode as ir
 
 path = "../test"
 trep = txtrep.PorterStemmer()
@@ -25,6 +26,11 @@ else :
     with open(path+indexFilePkl,"wb") as f:
         pkl.dump(ind, f)
 
-#wei = Weighter(ind, trep)
+wei = we.Weighter(ind)
 
-#vec = Vect
+vec = ir.Vectoriel(wei, False)
+
+testQ = ' '.join(np.random.choice(list(ind.stems),5))
+print(testQ)
+print(vec.getScores(testQ))
+print(vec.getRanking(testQ))

@@ -76,7 +76,7 @@ class Parser(object):
                     nbBytes=self.file.tell()-start;
                     break
             if (ok):
-                source=os.path.abspath(self.file.name)+";"+str(start)+";"+str(nbBytes)
+                source=os.path.relpath(self.file.name)+";"+str(start)+";"+str(nbBytes)
                 #print source
                 d=self.getDocument(st);
                 d.set("from", source);

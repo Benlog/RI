@@ -30,7 +30,7 @@ class IndexOnFile(Index):
         self.parser = parser
         self.textRepresenter = textRepresenter
 
-    def indexation(self, path, verbose = True):
+    def indexation(self, path, verbose = False):
         if verbose : print("Début de l'indexation")
         self.path = path
         with open(self.path + "/" + self.name + self.indexPathName, "w+b") as fi :
