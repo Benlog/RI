@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Weighter(Object):
+class Weighter(object):
 
     def __init__(self, index):
         self.index = index
