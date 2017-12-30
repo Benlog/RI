@@ -49,7 +49,7 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 			}
 	}
 	
-	public convex_loss(List<STrainingSample<X, Y>> lts, IStructModel<X, Y> model) {
+	public double convex_loss(List<STrainingSample<X, Y>> lts, IStructModel<X, Y> model) {
 		double loss = 0;
 		double[] p = model.getParameters();
 
@@ -59,10 +59,10 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 		for (int i = 0; i < n; i++) {
 			STrainingSample<X, Y> sample = lts.get(i);
 
-			m = -Double.MAX_VALUE;
+			double m = -Double.MAX_VALUE;
 
-			for (Y y : mi.enumerateY();)
-				m = Math.max( max, mi.delta(ts.output, y) + VectorOperations.dot(mi.psi(xi, y), p) );
+			for (Y y : mi.enumerateY())
+				m = Math.max( m, mi.delta(lts.output, y) + VectorOperations.dot(mi.psi(xi, y), p) );
 			
 			loss += m - VectorOperations.dot(mi.psi(ts.input, ts.output), p);
 		}
