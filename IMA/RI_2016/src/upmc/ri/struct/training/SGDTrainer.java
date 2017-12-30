@@ -6,7 +6,9 @@ import java.util.Random;
 
 import upmc.ri.struct.Evaluator;
 import upmc.ri.struct.STrainingSample;
+import upmc.ri.struct.instantiation.IStructInstantiation;
 import upmc.ri.struct.model.IStructModel;
+import upmc.ri.utils.VectorOperations;
 
 public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 	
@@ -47,8 +49,28 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 			}
 	}
 	
-	public convex_loss() {
-		
+	public convex_loss(List<STrainingSample<X, Y>> lts, IStructModel<X, Y> model) {
+		double loss = 0;
+		double[] p = model.getParameters();
+
+		IStructInstantiation<X, Y> mi = model.instantiation();
+		int n = lts.size(); 
+
+		for (int i = 0; i < n; i++) {
+			STrainingSample<X, Y> sample = lts.get(i);
+
+			m = -Double.MAX_VALUE;
+
+			for (Y y : mi.enumerateY();)
+				m = Math.max( max, mi.delta(ts.output, y) + VectorOperations.dot(mi.psi(xi, y), p) );
+			
+			loss += m - VectorOperations.dot(mi.psi(ts.input, ts.output), p);
+		}
+
+		loss /= lts.size();
+		loss += VectorOperations.norm2(p) * this.lambda / 2;
+
+		return loss;
 	}
 
 }
