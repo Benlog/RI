@@ -1,6 +1,5 @@
 package upmc.ri.struct.training;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -57,12 +56,12 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 		int n = lts.size(); 
 
 		for (int i = 0; i < n; i++) {
-			STrainingSample<X, Y> sample = lts.get(i);
+			STrainingSample<X, Y> ts = lts.get(i);
 
 			double m = -Double.MAX_VALUE;
 
 			for (Y y : mi.enumerateY())
-				m = Math.max( m, mi.delta(lts.output, y) + VectorOperations.dot(mi.psi(xi, y), p) );
+				m = Math.max( m, mi.delta(ts.output, y) + VectorOperations.dot(mi.psi(ts.input, y), p) );
 			
 			loss += m - VectorOperations.dot(mi.psi(ts.input, ts.output), p);
 		}

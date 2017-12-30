@@ -5,8 +5,8 @@ import java.util.Random;
 
 public abstract class LinearStructModel<X, Y> implements IStructModel<X, Y> {
 
-	private IStructInstantiation<X, Y> mi;
-	private double[] p;
+	protected IStructInstantiation<X, Y> mi;
+	protected double[] p;
 	public Random random = new Random();
 	
 	public LinearStructModel (int dimpsi) {
@@ -23,8 +23,12 @@ public abstract class LinearStructModel<X, Y> implements IStructModel<X, Y> {
 	public double[] getParameters() {
 		return this.p;
 	}
+	
+	public void setParameters(double[] w) {
+		this.p = w;
+	}
 
 	public void setInstantiation(IStructInstantiation <X,Y> instantiation) {
-		this.instantiation = instantiation;
+		this.mi = instantiation;
 	}
 }

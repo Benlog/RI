@@ -3,7 +3,6 @@ package upmc.ri.struct.model;
 import upmc.ri.struct.STrainingSample;
 import upmc.ri.utils.VectorOperations;
 import upmc.ri.struct.instantiation.IStructInstantiation;
-import java.util.Random;
 
 public class LinearStructModel_Ex<X, Y> extends LinearStructModel<X, Y> {
 
@@ -20,7 +19,7 @@ public class LinearStructModel_Ex<X, Y> extends LinearStructModel<X, Y> {
 			double r = VectorOperations.dot(this.p, this.mi.psi(ts.input, y));
 
             if(lai)
-                r += this.mi.delta(y, ts.output)
+                r += this.mi.delta(y, ts.output);
             
 			if (r > m) {
 				m = r;
@@ -32,10 +31,10 @@ public class LinearStructModel_Ex<X, Y> extends LinearStructModel<X, Y> {
 	}
 	
 	public Y predict(STrainingSample<X, Y> ts) {
-		predict(ts, false);
+		return predict(ts, false);
 	}
 
 	public Y lai(STrainingSample<X, Y> ts) {
-		predict(ts, true);
+		return predict(ts, true);
 	}
 }
