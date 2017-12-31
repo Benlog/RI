@@ -8,7 +8,7 @@ public class LinearStructModel_Ex<X, Y> extends LinearStructModel<X, Y> {
 
 	public LinearStructModel_Ex (IStructInstantiation<X, Y> instantiation, int dimpsi) {
 		super(dimpsi);
-		this.mi = instantiation;
+		mi = instantiation;
 	}
 
     public Y predict(STrainingSample<X, Y> ts, boolean lai) {
@@ -16,10 +16,10 @@ public class LinearStructModel_Ex<X, Y> extends LinearStructModel<X, Y> {
 		double m = -Double.MAX_VALUE;
 
 		for (Y y : this.mi.enumerateY()) {
-			double r = VectorOperations.dot(this.p, this.mi.psi(ts.input, y));
+			double r = VectorOperations.dot(p, mi.psi(ts.input, y));
 
             if(lai)
-                r += this.mi.delta(y, ts.output);
+                r += mi.delta(y, ts.output);
             
 			if (r > m) {
 				m = r;
