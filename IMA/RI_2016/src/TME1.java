@@ -13,7 +13,8 @@ import upmc.ri.utils.PCA;
 public class TME1 {
 	
 	public static void main(String[] args) throws Exception {
-		String dirPath = "/users/Etu3/3200403/RI/IMA/RI_2016/data/sbow/";
+		//String dirPath = "../../../data/sbow/";
+		String dirPath = args[0];
 		int nbComp = 250;
 		
 		Map<String,File> classFileMap = ImageNetParser.getClassFile(dirPath);
@@ -29,7 +30,7 @@ public class TME1 {
 		*/
 		DataSet<double[], String> data = VisualIndexes.createDataSet(classFileMap);
 		data = PCA.computePCA(data, nbComp);
-		VisualIndexes.saveDataSet(new File("./dataset.obj"), data);
+		VisualIndexes.saveDataSet(new File(dirPath + "dataset.obj"), data);
 		//System.out.println(VisualIndexes.loadDataSet(new File("./dataset.obj")));
 	}
 
