@@ -3,6 +3,7 @@ package upmc.ri.bin;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.ejml.data.D1Matrix64F;
@@ -47,7 +48,7 @@ public class MulticlassClassif {
 
 		int maxIter = 100;
 		double nt = 0.001;
-		double lambda = 1;
+		double lambda = 0.000001;
 		
 		// Classif
 		MulticlassClassif classif = initMulticlassClassif(objPath);
@@ -67,6 +68,7 @@ public class MulticlassClassif {
 		// SGDTrain
 		SGDTrainer<double[], String> sgd = new SGDTrainer<double[], String>(maxIter, nt, lambda, eval);
 		sgd.train(classif.data.listtrain, lm);
+		System.out.println("Liste des erreurs en test : " + Arrays.toString(sgd.lossHisto));
 		
 		// Eval
 		evaluate(lm, eval, classif, mc);
@@ -76,7 +78,7 @@ public class MulticlassClassif {
 		eval.evaluate();
 		
 		System.out.println("Erreur apprentissage : " + String.valueOf(eval.getErr_train()));
-		System.out.println("Erreur test          : " + String.valueOf(eval.getErr_test() ));
+		System.out.println("Erreur test          : " + String.valueOf(eval.getErr_test()));
 		
 		ArrayList<String> predictions = new ArrayList<String>();
 		ArrayList<String> gt = new ArrayList<String>();
@@ -96,15 +98,13 @@ public class MulticlassClassif {
 		
 		for (int i = 0; i < c.numRows; i++) {
 			double fp = 0;
-			for (int j = 0; j < c.numRows; j++)
-				if(i!=j)
-					fp += c.get(i, j);
-			precision += c.get(i, i) / fp;
+			for (int j = 0; j < c.numCols; j++)
+				fp += c.get(i, j);
+			precision += fp != 0 ? c.get(i, i) / fp : 0;
 			
 			double fn = 0;
-				for (int j = 0; j < c.numRows; j++)
-					if(i!=j)
-						fn += c.get(j, i);
+			for (int j = 0; j < c.numCols; j++)
+				fn += c.get(j, i);
 			recall += c.get(i, i) / fn;
 		}
 		

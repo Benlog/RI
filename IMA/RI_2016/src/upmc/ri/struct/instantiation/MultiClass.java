@@ -33,7 +33,7 @@ public class MultiClass implements IStructInstantiation<double[], String> {
 	}
 
 	public double delta(String y1, String y2) {
-		return y1.equals(y2) ? 1 : 0;
+		return y1.equals(y2) ? 0 : 1;
 	}
 
 	public Set<String> enumerateY() {
@@ -47,7 +47,7 @@ public class MultiClass implements IStructInstantiation<double[], String> {
 		D1Matrix64F c = new DenseMatrix64F(s, s);
 		
 		// init 0
-		for (String i : predictions) {
+		for (String i : gt) {
 			for (String j : gt)
 				c.set(classToInt.get(i), classToInt.get(j), 0);
 		}
@@ -55,7 +55,6 @@ public class MultiClass implements IStructInstantiation<double[], String> {
 		// confusion
 		for (int i = 0; i < gt.size(); i++) {
 			int prediction = classToInt.get(predictions.get(i));
-			System.out.println();
 			int gti = classToInt.get(gt.get(i));
 			c.set(prediction, gti, c.get(prediction, gti) + 1);
 		}

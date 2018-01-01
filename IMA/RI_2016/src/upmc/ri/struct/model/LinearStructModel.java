@@ -1,6 +1,8 @@
 package upmc.ri.struct.model;
 
 import upmc.ri.struct.instantiation.IStructInstantiation;
+
+import java.util.Arrays;
 import java.util.Random;
 
 public abstract class LinearStructModel<X, Y> implements IStructModel<X, Y> {
@@ -11,9 +13,11 @@ public abstract class LinearStructModel<X, Y> implements IStructModel<X, Y> {
 	
 	public LinearStructModel (int dimpsi) {
 
-		this.p = new double[dimpsi];
-        for(int i = 0; i < dimpsi; i++)
+		p = new double[dimpsi];
+		Arrays.fill(p, 0);
+        /*for(int i = 0; i < dimpsi; i++)
             this.p[i] = random.nextDouble();
+        */
 	}
 
 	public IStructInstantiation<X, Y> instantiation() {

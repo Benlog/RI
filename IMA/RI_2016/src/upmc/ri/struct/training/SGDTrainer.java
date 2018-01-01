@@ -42,12 +42,9 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 		
 		for(int t = 0; t < maxIter; t++) {
 			System.out.println("Itération : " + t);
-			double lossHistoT = 0;
 			for (int i = 0; i < n; i++) {
 				STrainingSample<X, Y> sample = lts.get(random.nextInt(n));
 				Y yPred = model.lai(sample);
-				
-				lossHistoT += model.instantiation().delta(sample.output, yPred);
 				
 				double[] gPred = model.instantiation().psi(sample.input, yPred);
 				double[] gReal = model.instantiation().psi(sample.input, sample.output);
@@ -63,7 +60,7 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 				
 				model.setParameters(fg);
 			}
-			lossHisto[t] = lossHistoT / n;
+			lossHisto[t] = convex_loss(lts, model);
 		}
 		System.out.println("Fin apprentissage");
 	}
