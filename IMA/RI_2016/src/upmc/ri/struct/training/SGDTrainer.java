@@ -19,6 +19,13 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 	public boolean verbose = false;
 	public List<STrainingSample<X, Y>> test;
 	
+	public SGDTrainer(int maxIter, double nt, double lambda, Evaluator<X, Y> eval) {
+		this.evaluator = eval;
+		this.nt = nt;
+		this.lambda = lambda;
+		this.maxIter = maxIter;
+	}
+	
 	@Override
 	public void train(List<STrainingSample<X, Y>> lts, IStructModel<X, Y> model) {
 		int n = lts.size(); 
@@ -28,7 +35,11 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 		evaluator.setModel(model);
 		evaluator.setListtrain(lts);
 		
-		for(int t = 0; t < maxIter; t++)		
+		System.out.println("Itérations : " + maxIter);
+		System.out.println("Ensemble d'apprentissage : " + n);
+		
+		for(int t = 0; t < maxIter; t++)
+			System.out.println("Itération : " + t);
 			for (int i = 0; i < n; i++) {
 				STrainingSample<X, Y> sample = lts.get(random.nextInt(n));
 				Y yPred = model.lai(sample);
@@ -37,14 +48,14 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 				double[] g = new double[gSize];
 				
 				for(int j = 0; j < gSize; j++)
-					g[j] = gPred[j] - gReal[i];
+					g[j] = gPred[j] - gReal[j];
 				
 				double[] fg = model.getParameters();
-				
+
 				for(int j = 0; j < gSize; j++)
-					fg[j] = fg[j] - (g[j] + lambda * fg[j]) * nt;
+					fg[j] -= (g[j] + lambda * fg[j]) * nt;
 				
-				model.setParameters(fg); 
+				model.setParameters(fg);
 			}
 	}
 	

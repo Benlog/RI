@@ -1,9 +1,14 @@
 package upmc.ri.struct.instantiation;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.ejml.data.D1Matrix64F;
+import org.ejml.data.DenseMatrix64F;
+import org.ejml.ops.MatrixVisualization;
 
 public class MultiClass implements IStructInstantiation<double[], String> {
 	
@@ -11,6 +16,7 @@ public class MultiClass implements IStructInstantiation<double[], String> {
 	
 	public MultiClass(List<String> classes) {
 		int cpt = 0;
+		this.classToInt = new HashMap<String, Integer>();
 		for(String c : classes) {
 			classToInt.put(c, cpt);
 			cpt++;
@@ -33,6 +39,25 @@ public class MultiClass implements IStructInstantiation<double[], String> {
 
 	public Set<String> enumerateY() {
 		return classToInt.keySet();
+	}
+	
+
+	
+	public void confusionMatrix(List<String> predictions, List<String> gt){
+		int s = classToInt.size();
+		D1Matrix64F c = new DenseMatrix64F(s, s);
+		
+		for (String i : predictions)
+			for (String j : gt)
+				c.set(classToInt.get(i), classToInt.get(j), 0);
+		
+		for (int i = 0; i < gt.size(); i++){
+			int prediction = classToInt.get(predictions.get(i));
+			int gti = classToInt.get(gt.get(i));
+			c.set(prediction, gti, c.get(prediction, gti) + 1);
+		}
+		
+		MatrixVisualization.show(c, "Confusion Matrix");
 	}
 	
 }

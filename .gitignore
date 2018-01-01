@@ -22,7 +22,7 @@
 hs_err_pid*
 
 .metadata
-bin/
+RI_2016/bin/
 tmp/
 *.tmp
 *.bak
