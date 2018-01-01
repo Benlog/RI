@@ -8,11 +8,10 @@ import java.util.Set;
 
 import org.ejml.data.D1Matrix64F;
 import org.ejml.data.DenseMatrix64F;
-import org.ejml.ops.MatrixVisualization;
 
 public class MultiClass implements IStructInstantiation<double[], String> {
 	
-	protected Map<String,Integer> classToInt;
+	public final Map<String,Integer> classToInt;
 	
 	public MultiClass(List<String> classes) {
 		int cpt = 0;
@@ -43,21 +42,25 @@ public class MultiClass implements IStructInstantiation<double[], String> {
 	
 
 	
-	public void confusionMatrix(List<String> predictions, List<String> gt){
+	public D1Matrix64F confusionMatrix(List<String> predictions, List<String> gt) {
 		int s = classToInt.size();
 		D1Matrix64F c = new DenseMatrix64F(s, s);
 		
-		for (String i : predictions)
+		// init 0
+		for (String i : predictions) {
 			for (String j : gt)
 				c.set(classToInt.get(i), classToInt.get(j), 0);
+		}
 		
-		for (int i = 0; i < gt.size(); i++){
+		// confusion
+		for (int i = 0; i < gt.size(); i++) {
 			int prediction = classToInt.get(predictions.get(i));
+			System.out.println();
 			int gti = classToInt.get(gt.get(i));
 			c.set(prediction, gti, c.get(prediction, gti) + 1);
 		}
 		
-		MatrixVisualization.show(c, "Confusion Matrix");
+		return c;
 	}
 	
 }

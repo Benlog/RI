@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ejml.data.D1Matrix64F;
+import org.ejml.ops.MatrixVisualization;
+
 import upmc.ri.struct.DataSet;
 import upmc.ri.struct.Evaluator;
 import upmc.ri.struct.STrainingSample;
@@ -40,15 +43,14 @@ public class MulticlassClassif {
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		//String dirPath = "../../data/sbow/";
-		String dirPath = args[0];
+		String objPath = args[0];
 
 		int maxIter = 100;
 		double nt = 0.001;
 		double lambda = 1;
 		
 		// Classif
-		MulticlassClassif classif = initMulticlassClassif(dirPath + "dataset.obj");
+		MulticlassClassif classif = initMulticlassClassif(objPath);
 		int dimpsi = classif.data.listtest.get(0).input.length;
 		List<String> classes = new ArrayList<String>(classif.data.outputs());
 		
@@ -84,14 +86,33 @@ public class MulticlassClassif {
 			gt.add(ts.output);
 		}
 		
-		List<String> classes = new ArrayList<String>(classif.data.outputs());
-		m.setInstantiation(initMultiClass(classes));
-		eval.setModel(m);
-		eval.evaluate();		
-		System.out.println("Train Error Hier: " + String.valueOf(eval.getErr_train()));
-		System.out.println("Test  Error Hier: " + String.valueOf(eval.getErr_test() ));
+		D1Matrix64F c = mc.confusionMatrix(predictions, gt);
+		System.out.println("debug predictions : " + predictions);
+		System.out.println("debug gt          : " + gt);
+		MatrixVisualization.show(c, "Confusion Matrix");
 		
-		mc.confusionMatrix(predictions, gt);
+		double precision = 0;
+		double recall = 0;
+		
+		for (int i = 0; i < c.numRows; i++) {
+			double fp = 0;
+			for (int j = 0; j < c.numRows; j++)
+				if(i!=j)
+					fp += c.get(i, j);
+			precision += c.get(i, i) / fp;
+			
+			double fn = 0;
+				for (int j = 0; j < c.numRows; j++)
+					if(i!=j)
+						fn += c.get(j, i);
+			recall += c.get(i, i) / fn;
+		}
+		
+		precision /= c.numRows;
+		recall    /= c.numRows;
+		
+		System.out.println("Precision : " + precision);
+		System.out.println("Rappel    : " + recall);
 	}
 
 }

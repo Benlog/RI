@@ -18,12 +18,14 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 	public Evaluator<X, Y> evaluator = new Evaluator<X, Y>();
 	public boolean verbose = false;
 	public List<STrainingSample<X, Y>> test;
+	public double[] lossHisto;
 	
 	public SGDTrainer(int maxIter, double nt, double lambda, Evaluator<X, Y> eval) {
 		this.evaluator = eval;
 		this.nt = nt;
 		this.lambda = lambda;
 		this.maxIter = maxIter;
+		lossHisto = new double[maxIter];
 	}
 	
 	@Override
@@ -38,11 +40,15 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 		System.out.println("Itérations : " + maxIter);
 		System.out.println("Ensemble d'apprentissage : " + n);
 		
-		for(int t = 0; t < maxIter; t++)
+		for(int t = 0; t < maxIter; t++) {
 			System.out.println("Itération : " + t);
+			double lossHistoT = 0;
 			for (int i = 0; i < n; i++) {
 				STrainingSample<X, Y> sample = lts.get(random.nextInt(n));
 				Y yPred = model.lai(sample);
+				
+				lossHistoT += model.instantiation().delta(sample.output, yPred);
+				
 				double[] gPred = model.instantiation().psi(sample.input, yPred);
 				double[] gReal = model.instantiation().psi(sample.input, sample.output);
 				double[] g = new double[gSize];
@@ -57,6 +63,9 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 				
 				model.setParameters(fg);
 			}
+			lossHisto[t] = lossHistoT / n;
+		}
+		System.out.println("Fin apprentissage");
 	}
 	
 	public double convex_loss(List<STrainingSample<X, Y>> lts, IStructModel<X, Y> model) {

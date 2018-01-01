@@ -15,11 +15,11 @@ public class LinearStructModel_Ex<X, Y> extends LinearStructModel<X, Y> {
 		Y prediction = null;
 		double m = -Double.MAX_VALUE;
 
-		for (Y y : this.mi.enumerateY()) {
+		for (Y y : mi.enumerateY()) {
 			double r = VectorOperations.dot(p, mi.psi(ts.input, y));
 
             if(lai)
-                r += mi.delta(y, ts.output);
+                r += mi.delta(ts.output, y);
             
 			if (r > m) {
 				m = r;
