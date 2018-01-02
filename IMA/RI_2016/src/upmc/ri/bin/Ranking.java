@@ -2,6 +2,7 @@ package upmc.ri.bin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -21,8 +22,8 @@ public class Ranking {
 		String objPath  = args[0];
 		String selClass = args[1];
 		int maxIter = 50;
-		double nt = 0.001;
-		double lambda = 10;
+		double nt = 10;
+		double lambda = 0.001;
 		
 		// chargement données
 		DataSet<double[], String> data_index = VisualIndexes.loadDataSet(new File(objPath));
@@ -42,6 +43,7 @@ public class Ranking {
 		// SGDTrain
 		SGDTrainer<List<double[]>, RankingOutput> sgd = new SGDTrainer<List<double[]>, RankingOutput>(maxIter, nt, lambda, eval);
 		sgd.train(data.listtrain, rsm);
+		System.out.println("Liste des erreurs en test : " + Arrays.toString(sgd.lossHisto));
 		
 		// Eval
 		System.out.println("Draw");
