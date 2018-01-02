@@ -25,7 +25,7 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 		this.nt = nt;
 		this.lambda = lambda;
 		this.maxIter = maxIter;
-		lossHisto = new double[maxIter];
+		//lossHisto = new double[maxIter];
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class SGDTrainer<X, Y> implements ITrainer<X, Y> {
 				
 				model.setParameters(fg);
 			}
-			lossHisto[t] = convex_loss(lts, model);
+			//lossHisto[t] = convex_loss(lts, model);
 		}
 		System.out.println("Fin apprentissage");
 	}

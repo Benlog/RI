@@ -12,11 +12,13 @@ public class RankingInstantiation implements IStructInstantiation<List<double[]>
 	public double[] psi(List<double[]> x, RankingOutput y) {
 		double[] r = new double[x.get(0).length];
 		Arrays.fill(r, 0);
-		for (int i = 0; i < x.size(); i++) {
+		int i = 0;
+		List<Integer> pos = y.getPositionningFromRanking();
+		for (i = 0; i < x.size(); i++) {
+			int posi = pos.get(i);
 			for (int j = 0; j < x.size(); j++) {
+				int posj = pos.get(j);
 				int mult = 0;
-				int posi = y.getPositionningFromRanking().get(i);
-				int posj = y.getPositionningFromRanking().get(j);
 				if (posi < posj)
 					mult = 1;
 				else if (posi > posj)
