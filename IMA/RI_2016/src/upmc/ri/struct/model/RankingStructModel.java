@@ -30,9 +30,9 @@ public class RankingStructModel extends LinearStructModel<List<double[]>, Rankin
 	        @Override
 	        public int compare(Integer i, Integer j){
 	        	if(dot[i] - dot[j] > 0)
-	        		return 1;
-	        	if(dot[i] - dot[j] < 0)
 	        		return -1;
+	        	if(dot[i] - dot[j] < 0)
+	        		return 1;
 	        	else 
 	        		return 0;
 	        }
