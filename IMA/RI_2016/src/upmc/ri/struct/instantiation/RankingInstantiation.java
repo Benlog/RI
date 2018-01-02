@@ -14,16 +14,15 @@ public class RankingInstantiation implements IStructInstantiation<List<double[]>
 		Arrays.fill(r, 0);
 		for (int i = 0; i < x.size(); i++) {
 			for (int j = 0; j < x.size(); j++) {
-				for (int j2 = 0; j2 < r.length; j2++) {
-					int mult = 0;
-					int posi = y.getPositionningFromRanking().get(i);
-					int posj = y.getPositionningFromRanking().get(j);
-					if (posi < posj)
-						mult = 1;
-					else if (posi > posj)
-						mult = -1;
+				int mult = 0;
+				int posi = y.getPositionningFromRanking().get(i);
+				int posj = y.getPositionningFromRanking().get(j);
+				if (posi < posj)
+					mult = 1;
+				else if (posi > posj)
+					mult = -1;
+				for (int j2 = 0; j2 < r.length; j2++) 
 					r[j2] += y.getLabelsGT().get(i) * mult * x.get(i)[j2];
-				}
 			}
 		}
 		return r;
