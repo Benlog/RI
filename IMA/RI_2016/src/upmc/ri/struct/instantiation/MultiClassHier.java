@@ -7,15 +7,17 @@ import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.cmu.lti.ws4j.RelatednessCalculator;
 import edu.cmu.lti.ws4j.impl.WuPalmer;
 
-public class MultiClassHier extends MultiClass {
-
+public class MultiClassHier extends MultiClass
+{
 	private double[][] distances;
 	
-	public double delta(String real, String prediction) {
-		return this.distances[classToInt.get(real)][classToInt.get(prediction)];
+	public double delta(String real, String prediction)
+	{
+		return distances[classToInt.get(real)][classToInt.get(prediction)];
 	}
 	
-	public MultiClassHier(List<String> classes) {
+	public MultiClassHier(List<String> classes)
+	{
 		super(classes);
 		
 		// initialisation distances
@@ -31,16 +33,18 @@ public class MultiClassHier extends MultiClass {
 		double max = -Double.MAX_VALUE;
 		
 		// compute distances
-		for (String a : classes) {
+		for (String a : classes)
+		{
 			int i = classToInt.get(a);
-			for (String b : classes) { 
+			for (String b : classes)
+			{ 
 				int j = classToInt.get(b);
 
 				if (i == j) 
 					distances[i][j] = 0;
 				
-				else if (i < j) { // économie symétrie et axe à 0
-					
+				else if (i < j) // économie symétrie et axe à 0
+				{
 					// dissimilarité
 					distances[i][j] = 1 - rc.calcRelatednessOfWords(a, b);
 					
@@ -50,7 +54,6 @@ public class MultiClassHier extends MultiClass {
 
 					if (distances[i][j] > max)
 						max = distances[i][j];
-
 				}
 			}
 		}
@@ -59,11 +62,15 @@ public class MultiClassHier extends MultiClass {
 		double e = max - min;
 		double bmin = 0;
 		double bmax = 2;
+		
 		for (int i = 0; i < n; i++)
-			for (int j = i+1; j < n; j++){
+		{
+			for (int j = i+1; j < n; j++)
+			{
 				distances[i][j] = bmax * (distances[i][j] - min) / e + bmin;
 				distances[j][i] = distances[i][j]; // symétrie
 			}
+		}
 		
 	}
 }

@@ -10,28 +10,20 @@ import upmc.ri.struct.DataSet;
 import upmc.ri.utils.PCA;
 
 
-public class TME1 {
-	
-	public static void main(String[] args) throws Exception {
-		//String dirPath = "../../../data/sbow/";
+public class TME1
+{
+	public static void main(String[] args) throws Exception
+	{
 		String dirPath = args[0];
 		int nbComp = 250;
 		
 		Map<String,File> classFileMap = ImageNetParser.getClassFile(dirPath);
-		/*
-		List<ImageFeatures> features = ImageNetParser.getFeatures(classFileMap.get(ImageNetParser.classesImageNet().toArray()[0]).getAbsolutePath());
-		System.out.println(features);
-		double[] histo = VIndexFactory.computeBow(features.get(0));
-		System.out.println();
-		for (double h : histo){
-			System.out.print(h + " ");
-		}
-		System.out.println();
-		*/
+
+
 		DataSet<double[], String> data = VisualIndexes.createDataSet(classFileMap);
 		data = PCA.computePCA(data, nbComp);
+		
 		VisualIndexes.saveDataSet(new File(dirPath + "dataset.obj"), data);
-		//System.out.println(VisualIndexes.loadDataSet(new File("./dataset.obj")));
 	}
 
 }
