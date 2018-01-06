@@ -19,23 +19,34 @@ import upmc.ri.struct.training.SGDTrainer;
 import upmc.ri.bin.VisualIndexes;
 
 
-public class MulticlassClassif {
-
+public class MulticlassClassif
+{
 	protected DataSet<double[], String> data;
 	
-	public MulticlassClassif(){
-		// (debug classifhier
-	}
+	public MulticlassClassif(){} // (debug classifhier)
 	
-	public MulticlassClassif(String sourcePath) throws ClassNotFoundException, IOException{
+	/**
+	 * Initialise un classifieur multi-classe
+	 * 
+	 * @param sourcePath	Emplacement du dataset indexé
+	 */
+	public MulticlassClassif(String sourcePath) throws ClassNotFoundException, IOException
+	{
 		data = VisualIndexes.loadDataSet(new File(sourcePath));
 	}
 	
-	public MulticlassClassif(DataSet<double[], String> dataSet) {
+	/**
+	 * Initialise un classifieur multi-classe
+	 * 
+	 * @param dataSet		Dataset indexé
+	 */
+	public MulticlassClassif(DataSet<double[], String> dataSet)
+	{
 		data = dataSet;
 	}
 	
-	public static MultiClass initMultiClass(List<String> classes){
+	public static MultiClass initMultiClass(List<String> classes)
+	{
 		return new MultiClass(classes);
 	}
 	
@@ -43,7 +54,8 @@ public class MulticlassClassif {
 		return new MulticlassClassif(path);
 	}
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException
+	{
 		String objPath = args[0];
 
 		int maxIter = 100;
@@ -74,7 +86,8 @@ public class MulticlassClassif {
 		evaluate(lm, eval, classif, mc);
 	}
 	
-	public static void evaluate(LinearStructModel<double[], String> m, Evaluator<double[], String> eval, MulticlassClassif classif, MultiClass mc) {
+	public static void evaluate(LinearStructModel<double[], String> m, Evaluator<double[], String> eval, MulticlassClassif classif, MultiClass mc)
+	{
 		eval.evaluate();
 		
 		System.out.println("Erreur apprentissage : " + String.valueOf(eval.getErr_train()));
@@ -83,20 +96,20 @@ public class MulticlassClassif {
 		ArrayList<String> predictions = new ArrayList<String>();
 		ArrayList<String> gt = new ArrayList<String>();
 		
-		for (STrainingSample<double[], String> ts : classif.data.listtest) {
+		for (STrainingSample<double[], String> ts : classif.data.listtest)
+		{
 			predictions.add(m.predict(ts));
 			gt.add(ts.output);
 		}
 		
 		D1Matrix64F c = mc.confusionMatrix(predictions, gt);
-		System.out.println("debug predictions : " + predictions);
-		System.out.println("debug gt          : " + gt);
 		MatrixVisualization.show(c, "Confusion Matrix");
 		
 		double precision = 0;
 		double recall = 0;
 		
-		for (int i = 0; i < c.numRows; i++) {
+		for (int i = 0; i < c.numRows; i++)
+		{
 			double fp = 0;
 			for (int j = 0; j < c.numCols; j++)
 				fp += c.get(i, j);

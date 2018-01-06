@@ -16,9 +16,10 @@ import upmc.ri.struct.instantiation.RankingInstantiation;
 import upmc.ri.struct.model.RankingStructModel;
 import upmc.ri.utils.Drawing;
 
-public class Ranking {
-	
-	public static void main(String[] args) throws ClassNotFoundException, IOException {
+public class Ranking
+{
+	public static void main(String[] args) throws ClassNotFoundException, IOException
+	{
 		String objPath  = args[0];
 		String selClass = args[1];
 		int maxIter = 50;
@@ -51,5 +52,4 @@ public class Ranking {
 		ImageIO.write(Drawing.traceRecallPrecisionCurve(data.listtest.get(0).output.getNbPlus(), RankingFunctions.recalPrecisionCurve(rsm.predict(data.listtest.get(0)))), "PNG", output);
 		System.out.println("Précision moyenne :" + RankingFunctions.averagePrecision(rsm.predict(data.listtest.get(0))));
 	}
-
 }
