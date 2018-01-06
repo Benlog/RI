@@ -7,7 +7,8 @@ import pickle as pkl
 from pathlib import Path
 import numpy as np
 import Weighter as we
-import IRmode as ir
+import IRmodel as ir
+from modelLang import LanguageModel
 
 path = "../test"
 trep = txtrep.PorterStemmer()
@@ -29,8 +30,13 @@ else :
 wei = we.Weighter(ind)
 
 vec = ir.Vectoriel(wei, False)
+lang = LanguageModel(wei)
 
 testQ = ' '.join(np.random.choice(list(ind.stems),5))
 print(testQ)
+print("vec")
 print(vec.getScores(testQ))
 print(vec.getRanking(testQ))
+print("lang")
+print(lang.getScores(testQ))
+print(lang.getRanking(testQ))

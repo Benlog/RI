@@ -46,7 +46,7 @@ class IndexOnFile(Index):
                     if verbose == 2 : print("Stem :", stems)
                     for k,v in stems.items():
                         ls = self.stems.get(k, (0,0))[1]
-                        self.stems[k] = (0, len((str(v)+str(doc.getId())).encode())+4+ls)
+                        self.stems[k] = (0, len((str(v)+str(doc.getId())).encode())+6+ls)
                     fi.write(str(stems).encode())
                     self.docs[doc.getId()] = (cur,fi.tell()-cur)
                     cur = fi.tell()
@@ -70,7 +70,7 @@ class IndexOnFile(Index):
                     for s,(ds,ls) in self.stems.items():
                         if dic.get(s):
                             fs.seek(ds+av[s])
-                            sW = str(k) + ": " + str(dic[s])
+                            sW = "'" + str(k) + "'" + ": " + str(dic[s])
                             if av[s] == 0 : sW = '{' + sW
                             else : sW = ', ' + sW
                             if av[s] + len(sW.encode()) == ls - 1: sW = sW + '}'
