@@ -11,7 +11,7 @@ import numpy as np
 class RecallMesure(EvalMesure):
     def eval(l, nbLevels = 11):
         r = {}
-        for k in numpy.linspace(0,1,nbLevels):
+        for k in np.linspace(0,1,nbLevels):
             r[k] = max([len(l[1][:i] & l[0]['revelent'].keys()) / i  for i in range(1, len(l[1]))\
              if (len(l[1][:i] & l[0]['revelent'].keys()) / len(l[0]['revelent'])) > k])
         return r
