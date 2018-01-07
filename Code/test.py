@@ -9,6 +9,8 @@ import numpy as np
 import Weighter as we
 import IRmodel as ir
 from modelLang import LanguageModel
+from EvalCACM import QueryParserCACM
+from Mesures import *
 
 path = "../test"
 trep = txtrep.PorterStemmer()
@@ -40,3 +42,8 @@ print(vec.getRanking(testQ))
 print("lang")
 print(lang.getScores(testQ))
 print(lang.getRanking(testQ))
+
+qp = QueryParserCACM("../cacm/cacm.qry", "../cacm/cacm.rel")
+e = EvalIRModel(qp, [RecallMesure(), APMesure(), PrecisionMesure(), ClusterRecallMesure()])
+print(e.eval([vec, lang]))
+
