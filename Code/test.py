@@ -10,7 +10,7 @@ import Weighter as we
 import IRmodel as ir
 from modelLang import LanguageModel
 from EvalCACM import QueryParserCACM
-from Mesures import *
+from Mesures import APMesure, EvalIRModel, RecallMesure
 
 path = "../test"
 trep = txtrep.PorterStemmer()
@@ -31,6 +31,7 @@ else :
 
 wei = we.Weighter(ind)
 
+print("Création des modèles\n")
 vec = ir.Vectoriel(wei, False)
 lang = LanguageModel(wei)
 
@@ -43,7 +44,10 @@ lang = LanguageModel(wei)
 #print(lang.getScores(testQ))
 #print(lang.getRanking(testQ))
 
+print("Mise en place des tests\n")
 qp = QueryParserCACM("../cacm/cacm.qry", "../cacm/cacm.rel")
-e = EvalIRModel(qp, [RecallMesure(), APMesure(), PrecisionMesure(), ClusterRecallMesure()])
-print(e.eval([vec, lang]))
+e = EvalIRModel(qp, [RecallMesure(),APMesure()])
+eva = e.eval([vec, lang])
+#print((np.mean(eva, axis=2), np.std(eva, axis=2)))
+print(eva)
 

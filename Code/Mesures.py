@@ -46,17 +46,16 @@ class EvalIRModel(object):
         self.mesures = mesures
 
     def eval(self, models):
-        r = []
-        for m in models:
-            evals_q = []
-            for q in self.queries:
+        evals_q = []
+        for q in self.queries:
+            eva = np.empty((len(models),len(self.mesures),1))
+            for i,m in enumerate(models):
                 l = m.getRanking(q['text'])
-                evals = []
-                for e in self.mesures:
-                    evals.append(e.eval(q, l))
-                evals_q.append(evals)
-            evals_q = np.array(evals_q)
+                for j,e in enumerate(self.mesures):
+                    eva[i][j] = e.eval(q, l)
+            evals_q.append(eva)
 
-            r.append((np.mean(evals, axis=1), np.std(evals, axis=1)))
-
-        return r
+        return np.concatenate(evals_q, 2)
+#        evals_q = np.concatenate(evals_q, 2)
+#
+#        return (np.mean(evals_q, axis=2), np.std(evals_q, axis=2))
