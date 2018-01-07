@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 import Weighter as we
 import IRmodel as ir
-from modelLang import LanguageModel
+from modelLang import LanguageModel, Okapi
 from EvalCACM import QueryParserCACM
 from Mesures import APMesure, EvalIRModel, RecallMesure
 
@@ -34,20 +34,21 @@ wei = we.Weighter(ind)
 print("Création des modèles\n")
 vec = ir.Vectoriel(wei, False)
 lang = LanguageModel(wei)
+oka = Okapi(wei)
 
 #testQ = ' '.join(np.random.choice(list(ind.stems),5))
 #print(testQ)
 #print("vec")
-#print(vec.getScores(testQ))
 #print(vec.getRanking(testQ))
 #print("lang")
-#print(lang.getScores(testQ))
 #print(lang.getRanking(testQ))
+#print("okapi")
+#print(oka.getRanking(testQ))
 
 print("Mise en place des tests\n")
 qp = QueryParserCACM("../cacm/cacm.qry", "../cacm/cacm.rel")
 e = EvalIRModel(qp, [APMesure()])
-eva = e.eval([vec, lang])
-#print((np.mean(eva, axis=2), np.std(eva, axis=2)))
+eva = e.eval([vec, lang, oka])
+print((np.mean(eva, axis=2), np.std(eva, axis=2)))
 print(eva)
 
