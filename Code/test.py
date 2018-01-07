@@ -46,7 +46,7 @@ lang = LanguageModel(wei)
 
 print("Mise en place des tests\n")
 qp = QueryParserCACM("../cacm/cacm.qry", "../cacm/cacm.rel")
-e = EvalIRModel(qp, [RecallMesure(),APMesure()])
+e = EvalIRModel(qp, [APMesure()])
 eva = e.eval([vec, lang])
 #print((np.mean(eva, axis=2), np.std(eva, axis=2)))
 print(eva)
