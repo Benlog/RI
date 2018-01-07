@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import Evaluation as eva
-import ParserCACM as pars
+from Evaluation import QueryParser
+from ParserCACM import ParserCACM
 import pandas as pd
 
-class QueryParserCACM(eva.QueryParser):
+class QueryParserCACM(QueryParser):
     def __init__(self, req, jug):
-        self.pars = pars.ParserCACM()
+        self.pars = ParserCACM()
         self.pars.initFile(req)
         self.jug = pd.read_csv(jug, delim_whitespace=True, header=None, index_col=False, names=['queryId', 'docId', 'sub-theme', 'score'])
 
@@ -15,7 +15,7 @@ class QueryParserCACM(eva.QueryParser):
         '''
             :return: return a dictionary {'id' : id of the query, 'text' : text of the querry, 'revelent' : {docId : (sub-theme, score)}}
         '''
-        __next__()
+        return self.__next__()
 
 
     def __next__(self):

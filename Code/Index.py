@@ -39,7 +39,7 @@ class IndexOnFile(Index):
                 doc = self.parser.nextDocument()
                 if verbose : print("Création de l'index")
                 while(doc):
-                    if verbose : print("Indexation du doc :", doc.getId())
+                    if verbose == 2 : print("Indexation du doc :", doc.getId())
                     p, b, l = doc.get("from").split(";")
                     self.docFrom[doc.getId()] = (p, int(b), int(l))
                     stems = self.textRepresenter.getTextRepresentation(doc.getText())
@@ -63,7 +63,7 @@ class IndexOnFile(Index):
                     cur += l
                     av[s] = 0
                 for k,(d,l) in self.docs.items():
-                    if verbose : print("Indexation du doc :", k)
+                    if verbose == 2 : print("Indexation du doc :", k)
                     fi.seek(d)
                     dic = ast.literal_eval(fi.read(l).decode())
                     if verbose == 2 : print("Docs :", dic)
@@ -83,6 +83,7 @@ class IndexOnFile(Index):
             if verbose : print("Fin de l'indexation")
 
     def getTfsForDoc(self, i):
+        if i not in self.docs : return {}
         with open(self.path + "/" + self.name + "_index", "rb") as f :
             f.seek(self.docs[i][0])
             s = f.read(self.docs[i][1]).decode()
@@ -91,12 +92,14 @@ class IndexOnFile(Index):
 
 
     def getTfsForStem(self, i):
+        if i not in self.stems : return {}
         with open(self.path + "/" + self.name + "_inverted", "rb") as f:
             f.seek(self.stems[i][0])
             s = f.read(self.stems[i][1]).decode()
             return ast.literal_eval(s)
 
     def getStrDoc(self, i):
+        if i not in self.docFrom : return {}
         with Path(self.docFrom[i][0]).open("rb") as f:
             f.seek(self.docFrom[i][1])
             return f.read(self.docFrom[i][2]).decode()
