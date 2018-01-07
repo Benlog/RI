@@ -43,7 +43,7 @@ lang = LanguageModel(wei)
 #print(lang.getScores(testQ))
 #print(lang.getRanking(testQ))
 
-qp = QueryParserCACM(Path("../cacm/cacm.qry"), Path("../cacm/cacm.rel"))
+qp = QueryParserCACM("../cacm/cacm.qry", "../cacm/cacm.rel")
 e = EvalIRModel(qp, [RecallMesure(), APMesure(), PrecisionMesure(), ClusterRecallMesure()])
 print(e.eval([vec, lang]))
 

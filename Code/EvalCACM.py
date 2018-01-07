@@ -20,7 +20,9 @@ class QueryParserCACM(QueryParser):
 
     def __next__(self):
         q = self.pars.nextDocument()
-        return {'id' : q.identifier, 'text' : q.text, 'revelent' : self.jug[self.jug.queryId==5].drop('queryId', axis=1).set_index('docId').to_dict('index')}
+        if q:
+            return {'id' : q.identifier, 'text' : q.text, 'revelent' : self.jug[self.jug.queryId==5].drop('queryId', axis=1).set_index('docId').to_dict('index')}
+        raise StopIteration()
 
     def __iter__(self):
         return self
