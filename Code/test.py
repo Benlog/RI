@@ -11,6 +11,7 @@ import IRmodel as ir
 from modelLang import LanguageModel, Okapi
 from EvalCACM import QueryParserCACM
 from Mesures import APMesure, EvalIRModel, RecallMesure
+from sklearn.model_selection import train_test_split as tts
 
 path = "../test"
 trep = txtrep.PorterStemmer()
@@ -52,3 +53,18 @@ eva = e.eval([vec, lang, oka])
 print((np.mean(eva, axis=2), np.std(eva, axis=2)))
 print(eva)
 
+
+# Train Test
+queries = [q for q in qp]
+train, test = tts(queries)
+
+llamb = np.arange(0.1, 1, 0.1)
+lk1   = np.arange(1.1, 2, 0.1)
+lb    = np.arange(0.1, 1, 0.1)
+
+lml = [LanguageModel(wei, lamb) for lamb in llamb]
+oml = [Okapi(wei) for k1 in lk1 for b in lb]
+
+eva = e.eval([vec] + lml + oml)
+print((np.mean(eva, axis=2), np.std(eva, axis=2)))
+print(eva)
