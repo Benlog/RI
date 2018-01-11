@@ -6,10 +6,10 @@ Created on Thu Dec 21 11:43:40 2017
 """
 from Evaluation import EvalMesure
 import numpy as np
-import time
+#import time
 import logging
 log = logging.getLogger()
-log.setLevel(logging.DEBUG)
+#log.setLevel(logging.DEBUG)
 log_format = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
@@ -21,6 +21,8 @@ class RecallMesure(EvalMesure):
     def __init__(self, n=11):
         self.n = n
     def eval(self, q, l):
+        if len(q['revelent']) == 0:
+            return {k : 1 for k in np.linspace(0,1,self.n)}
         r = {}
         l = list(zip(*l))[0]
         for k in np.linspace(0,1,self.n):
@@ -32,6 +34,10 @@ class RecallMesure(EvalMesure):
 
 class APMesure(EvalMesure):
     def eval(self, q, l):
+        if len(q['revelent']) == 0:
+            return 1
+        if len(l) == 0:
+            return 0
         l = list(zip(*l))[0]
         return (1/len(q['revelent'])) * sum([len(l[:i] & q['revelent'].keys()) / len(l[:i]) for i in range(1, len(l))  \
         if l[i] in q['revelent']])
@@ -49,6 +55,8 @@ class ClusterRecallMesure(EvalMesure):
     def __init__(self, n=20):
         self.n = n
     def eval(self, q, l):
+        if len(q['revelent']) == 0:
+            return 1
         l = list(zip(*l))[0]
         return len({d[0] for d in l[:self.n]} & q['revelent'].keys()) / len(q['revelent'].keys())
 
