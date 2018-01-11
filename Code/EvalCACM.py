@@ -8,7 +8,7 @@ class QueryParserCACM(QueryParser):
     def __init__(self, req, jug):
         self.pars = ParserCACM()
         self.pars.initFile(req)
-        self.jug = pd.read_csv(jug, delim_whitespace=True, header=None, index_col=False, names=['queryId', 'docId', 'sub-theme', 'score'])
+        self.jug = pd.read_csv(jug, delim_whitespace=True, header=None, index_col=False, names=['queryId', 'docId', 'sub-theme', 'score'], dtype={'queryId' : str, 'docId' : str}, converters={'queryId' : lambda x : str(int(x))})
 
 
     def nextQuery(self):
