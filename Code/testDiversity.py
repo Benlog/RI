@@ -8,9 +8,9 @@ from pathlib import Path
 import numpy as np
 import Weighter as we
 import IRmodel as ir
-from modelLang import LanguageModel, Okapi
 from EvalCACM import QueryParserCACM
 from Mesures import PrecisionMesure, ClusterRecallMesure, EvalIRModel
+from DiversityModel import DiversityModel
 #from sklearn.model_selection import train_test_split as tts
 
 path = "../test"
@@ -30,12 +30,14 @@ else :
     with open(path+indexFilePkl,"wb") as f:
         pkl.dump(ind, f)
 
-wei = we.Weighter(ind)
+wei = we.TfWeighter(ind)
+vec = ir.Vectoriel(wei, False)
+clu = DiversityModel(wei, vec, ndocs = 5)
 
 print("Création des modèles\n")
 vec = ir.Vectoriel(wei, False)
-lang = LanguageModel(wei)
-oka = Okapi(wei)
+#lang = LanguageModel(wei)
+#oka = Okapi(wei)
 
 #testQ = ' '.join(np.random.choice(list(ind.stems),5))
 #print(testQ)
@@ -48,7 +50,7 @@ oka = Okapi(wei)
 
 print("Mise en place des tests\n")
 qp = QueryParserCACM("../easyCLEF08/easyCLEF08_query.txt", "../easyCLEF08/easyCLEF08_gt.txt")
-e = EvalIRModel(qp, [PrecisionMesure(), ClusterRecallMesure()])
-eva = e.eval([vec, lang, oka])
+e = EvalIRModel(trep, list(qp), [PrecisionMesure(), ClusterRecallMesure()], [clu])
+eva = e.eval()
 print((np.mean(eva, axis=2), np.std(eva, axis=2)))
 print(eva)
