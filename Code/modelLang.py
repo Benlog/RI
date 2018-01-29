@@ -5,8 +5,8 @@ import numpy as np
 
 
 class LanguageModel(IRmodel):
-    def __init__(self, index, weighter, lamb = 0.5):
-        super().__init__(index, weighter)
+    def __init__(self, weighter, lamb = 0.5):
+        super().__init__(weighter)
         self.lamb = lamb
         self.corpusLen = sum([sum(self.weighter.getDocWeightsForDoc(d).values()) for d in self.weighter.index.docs])
 
@@ -27,8 +27,8 @@ class LanguageModel(IRmodel):
 
 class Okapi(IRmodel):
 
-    def __init__(self, index, weighter, k1 = 1.5, b = 0.75):
-        super().__init__(index, weighter)
+    def __init__(self, weighter, k1 = 1.5, b = 0.75):
+        super().__init__(weighter)
         self.k1 = k1
         self.b = b
         l = [sum(self.weighter.getDocWeightsForDoc(d).values()) for d in self.weighter.index.docs]
