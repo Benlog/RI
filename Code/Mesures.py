@@ -152,7 +152,7 @@ class EvalIRModel(object):
 
             for k, q in enumerate(self.queries):
                 log.debug("Pré-traitement de la requête (%d) [%s]", k, q['id'])
-                scores[k] = m.getRanking(self.stemmer.getTextRepresentation(q['text']))
+                scores[k] = m.getRanking(q['text'])
 
             for j, e in enumerate(self.mesures):
                 log.debug("Mesure par évaluation (%d) %s", j, e.__class__.__name__)

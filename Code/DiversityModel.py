@@ -3,8 +3,9 @@ from IRmodel import IRmodel
 
 
 class ClusterDiversityModel(IRmodel):
-    def __init__(self, model, clustering, index, weighter):  # arg ord ?
-        super().__init__(index, weighter)
+    def __init__(self, model, clustering, index, wei):  # arg ord ?
+        super().__init__(wei)
+        self.index = index
         self.model = model            # Baseline
         self.clustering = clustering  # Algo de clustering
 
