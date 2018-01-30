@@ -25,12 +25,13 @@ def simCos(doc1,doc2):
 
 class DiversityGlouton(IRmodel):
 
-    def __init__(self, weighter, model, alpha = 0.5, ndocs = 100, mesure = simCos):
+    def __init__(self, weighter, model, alpha = 0.5, ndocsSortie = 50, ndocs = 100, mesure = simCos):
         super().__init__(weighter)
         self.model = model
         self.aplha = alpha
         self.mesure = mesure
         self.ndocs = ndocs
+        self.ndocsSortie = ndocsSortie
 
     def getRanking(self, query):
         qw = self.weighter.getWeightsForQuery(query)
@@ -44,7 +45,7 @@ class DiversityGlouton(IRmodel):
 
         r = [s[0]]
 
-        for i in range(len(s[1:])):
+        for i in range(self.ndocsSortie):
             r.append(max(set(s) - set(r), key = lambda x : value(x,r)))
 
         return r
