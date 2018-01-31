@@ -46,7 +46,7 @@ class DiversityGlouton(IRmodel):
         r = [(s[0],0)]
 
         for i in range(min(self.ndocsSortie, len(s)-1)):
-            r.append((max(set(s) - set(r), key = lambda x : value(x,r)), 0))
+            r.append((max(set(s) - set(list(zip(*r))[0]), key = lambda x : value(x,r)), 0))
 
         return r
 
