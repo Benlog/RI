@@ -28,15 +28,17 @@ class Vectoriel(IRmodel):
         if self.normalized : self.norms = {}
 
     def getScores(self, query):
-        wq = self.weighter.getWeightsForQuery(query)
-        if self.normalized : norm = np.linalg.norm(wq)
-        r = {}
-        for k,v in wq.items():
-            for k2,v2 in self.weighter.getDocWeightsForStem(k).items():
-                r[k2] = v * v2 + r.get(k2, 0)
-                if self.normalized :
-                    self.norms[k2] = np.linalg.norm(self.weighter.getDocWeightsForDoc(k2))
-                    r[k2] /= self.norms[k2] + norm
-        return r
+        scores = {}
+        qw = self.weighter.getWeightsForQuery(query)
 
+        if self.normalized:
+            norm = np.linalg.norm(qw)
 
+        for doc in self.weighter.index.docs:
+            dw = self.weighter.getDocWeightsForStem(doc).items()
+            scores[doc] = np.sum([qw[i] * dw[i] for i in qw if i in dw])
+
+            if self.normalized:
+                scores[doc] /= self.norms[doc] + norm
+
+        return scores
