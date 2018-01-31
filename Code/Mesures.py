@@ -103,13 +103,13 @@ class ClusterRecallMesure(EvalMesure):
         if len(q['revelent']) == 0:
             return 1
 
-        l = set(zip(*l))[0]
+        l = set(list(zip(*l[:self.n]))[0])
 
         clusters = set()
         cr = 0
         for d,(c,s) in q['revelent'].items() :
             if c not in clusters and d in l : cr += 1
-            clusters |= c
+            clusters |= set(c)
 
         return cr / len(clusters)
 
