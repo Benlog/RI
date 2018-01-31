@@ -103,9 +103,15 @@ class ClusterRecallMesure(EvalMesure):
         if len(q['revelent']) == 0:
             return 1
 
-        l = list(zip(*l))[0]
+        l = set(zip(*l))[0]
 
-        return len({d[0] for d in l[:self.n]} & q['revelent'].keys()) / len(q['revelent'].keys())
+        clusters = set()
+        cr = 0
+        for d,(c,s) in q['revelent'].items() :
+            if c not in clusters and d in l : cr += 1
+            clusters |= c
+
+        return cr / len(clusters)
 
 
 class EvalIRModel(object):

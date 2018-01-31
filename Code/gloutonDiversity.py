@@ -40,12 +40,37 @@ class DiversityGlouton(IRmodel):
 
         def value(d, l):
             dw = self.weighter.getDocWeightsForDoc(d)
-            psiMesure = lambda d, l : - sum( 1 - simCos(d,self.weighter.getDocWeightsForDoc(i)) for i in l)/len(l)
+            psiMesure = lambda d, l : - sum( 1 - simCos(d,self.weighter.getDocWeightsForDoc(i[0])) for i in l)/len(l)
             return self.aplha * self.mesure(dw,qw) - (1- self.aplha) * psiMesure(dw, l)
 
-        r = [s[0]]
+        r = [(s[0],0)]
 
-        for i in range(self.ndocsSortie):
-            r.append(max(set(s) - set(r), key = lambda x : value(x,r)))
+        for i in range(min(self.ndocsSortie, len(s)-1)):
+            r.append((max(set(s) - set(r), key = lambda x : value(x,r)), 0))
 
         return r
+
+#class DiversityGloutonScore(IRmodel):
+#
+#    def __init__(self, weighter, model, alpha = 0.5, ndocsSortie = 50, ndocs = 100):
+#        super().__init__(weighter)
+#        self.model = model
+#        self.aplha = alpha
+#        self.ndocs = ndocs
+#        self.ndocsSortie = ndocsSortie
+#
+#    def getRanking(self, query):
+#
+#        s = self.model.getRanking(query)[:self.ndocs]
+#
+#        def value(d, l):
+#            dw = self.weighter.getDocWeightsForDoc(d)
+#            psiMesure = lambda d, l : - sum( 1 - simCos(d,self.weighter.getDocWeightsForDoc(i)) for i in l)/len(l)
+#            return self.aplha * d[1] - (1- self.aplha) * psiMesure(dw, l)
+#
+#        r = [(s[0][0],0)]
+#
+#        for i in range(min(self.ndocsSortie, len(s-1))):
+#            r.append((max(set(s) - set(r), key = lambda x : value(x,r)), 0))
+#
+#        return list(zip(*r))
